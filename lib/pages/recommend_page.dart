@@ -52,7 +52,7 @@ class _RecommendPageState extends State<RecommendPage>
       setState(() {
         _topSongs = re.length >= 15 ? re.sublist(0, 15) : re;
       });
-      // 第一次进来的时候，设置默认的播放列表
+      // 第一次进来的时候,设置默认的播放列表
       MusicController musicController =
           Provider.of<MusicController>(context, listen: false);
       if (musicController.getCurrentSong() == null) {
@@ -77,7 +77,7 @@ class _RecommendPageState extends State<RecommendPage>
       });
     });
 
-// // TODO 后面添加： 下拉刷新，滑到下面才加载更多。
+// // TODO 后面添加： 下拉刷新,滑到下面才加载更多。
     MusicDao.getMVList(MusicDao.URL_MV_PERSONAL).then((list) {
       if (list.length > 10) {
         list = list.sublist(0, 10);
@@ -101,7 +101,7 @@ class _RecommendPageState extends State<RecommendPage>
     //print("${(progress * 100).toInt()}%");
 
     //print("BottomEdge: ${notification.metrics.extentAfter == 0}");
-    //return true; //放开此行注释后，进度条将失效
+    //return true; //放开此行注释后,进度条将失效
   }
 
   @override
@@ -111,7 +111,7 @@ class _RecommendPageState extends State<RecommendPage>
         body: NotificationListener<ScrollNotification>(
       onNotification: (notification) => _onScrolled(notification),
       child: CustomScrollView(
-        cacheExtent: 10.0, // 缓存区域，滚出多远后回收item，调用其dispose
+        cacheExtent: 10.0, // 缓存区域,滚出多远后回收item,调用其dispose
         slivers: <Widget>[
           _buildHeader(),
           _buildCenterGrid(),
@@ -189,7 +189,7 @@ class _RecommendPageState extends State<RecommendPage>
   }
 
   Widget _buildDivider() {
-    // 加载普通组件到CustomScrollView，
+    // 加载普通组件到CustomScrollView,
     return SliverToBoxAdapter(
       child: Divider(
         height: 1.0,

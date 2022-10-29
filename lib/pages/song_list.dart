@@ -13,7 +13,7 @@ class _SongListState extends State<SongList> {
 
   _getSongs() async {
     await MusicDao.getTopSongs(0).then((result) {
-      // 界面未加载，返回。
+      // 界面未加载,返回。
       if (!mounted) return;
 
       setState(() {
@@ -40,7 +40,7 @@ class _SongListState extends State<SongList> {
     } else {
       mWidget = ListView.builder(
         itemCount: this._songs.length,
-        itemExtent: 70.0, // 设定item的高度，这样可以减少高度计算。
+        itemExtent: 70.0, // 设定item的高度,这样可以减少高度计算。
         itemBuilder: (context, index) => SongItemTile(_songs, index),
       );
     }

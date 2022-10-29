@@ -13,15 +13,15 @@ import 'package:provider/provider.dart';
 
 class FavoriteIcon extends StatefulWidget {
   final Map song;
-  const FavoriteIcon(this.song, {Key key}) : super(key: key);
+  const FavoriteIcon(this.song, {Key? key}) : super(key: key);
 
   @override
   _FavoriteIconState createState() => _FavoriteIconState();
 }
 
 class _FavoriteIconState extends State<FavoriteIcon> {
-  bool isFavorited = false;
-  Map song;
+  bool _isFavorited = false;
+  late Map _song;
 
   @override
   void initState() {
@@ -30,31 +30,31 @@ class _FavoriteIconState extends State<FavoriteIcon> {
   }
 
   void _checkFavorite() {
-    FavoriteDB().getFavoriteById(song['id']).then((fav) {
+    FavoriteDB().getFavoriteById(_song['id']).then((Map<String, dynamic>? fav) {
       //print('getFavoriteById : $fav');
       setState(() {
-        isFavorited = fav != null;
+        _isFavorited = fav != null;
       });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    if (widget.song != song) {
-      song = widget.song;
+    if (widget.song != _song) {
+      _song = widget.song;
       _checkFavorite();
     }
     //print('FavoriteIcon build');
     return IconButton(
       icon: Icon(
         Icons.favorite,
-        color: isFavorited
+        color: _isFavorited
             ? Provider.of<ColorStyleProvider>(context, listen: false)
                 .getCurrentColor()
             : Colors.white60,
       ),
       onPressed: () {
-        if (this.isFavorited) {
+        if (this._isFavorited) {
           _cancelFavorite(context);
         } else {
           _addFavorite(context);
@@ -63,7 +63,11 @@ class _FavoriteIconState extends State<FavoriteIcon> {
     );
   }
 
-  _showSnackBar({IconData icon, String title, String subTitle}) {
+  _showSnackBar({
+    required IconData icon,
+    required String title,
+    String? subTitle,
+  }) {
     SnackBar snackBar = SnackBar(
         content: ListTile(
           leading: Icon(icon),
@@ -73,13 +77,13 @@ class _FavoriteIconState extends State<FavoriteIcon> {
               : null,
         ),
         duration: Duration(seconds: 3));
-    Scaffold.of(context).showSnackBar(snackBar);
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
-  void _addFavorite(context) {
+  Future<void> _addFavorite(context) async {
     bool success = false;
-    bool downloadOnFav =
-        SharedPreferenceUtil.getInstance().getBool('downloadOnFav') ?? false;
+    final pref = await SharedPreferenceUtil.getInstance();
+    bool downloadOnFav = pref.getBool('downloadOnFav') ?? false;
 
     FavoriteDB().addFavorite(widget.song).then((re) {
       print('addFavorite re: $re , song: ${widget.song}');
@@ -90,7 +94,7 @@ class _FavoriteIconState extends State<FavoriteIcon> {
       }
 
       setState(() {
-        isFavorited = true;
+        _isFavorited = true;
       });
       success = true;
     }).catchError((error) {
@@ -109,7 +113,7 @@ class _FavoriteIconState extends State<FavoriteIcon> {
 
     if (!await SongUtil.isSongDownloaded(songId)) {
       FavoriteDB().deleteFavorite(songId).then((value) => setState(() {
-            isFavorited = false;
+            _isFavorited = false;
           }));
       return;
     }
@@ -122,13 +126,13 @@ class _FavoriteIconState extends State<FavoriteIcon> {
               title: Text('取消收藏？', style: TextStyle(fontSize: 16.0)),
               content: Text('已下载歌曲会被删掉', style: TextStyle(fontSize: 14.0)),
               actions: <Widget>[
-                new FlatButton(
+                new TextButton(
                   child: new Text("继续收藏"),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
                 ),
-                new FlatButton(
+                new TextButton(
                   child: new Text("删除", style: TextStyle(color: Colors.red)),
                   onPressed: () {
                     FavoriteDB().deleteFavorite(songId).then((re) {
@@ -137,7 +141,7 @@ class _FavoriteIconState extends State<FavoriteIcon> {
                       success = true;
                       Navigator.of(context).pop();
                       setState(() {
-                        isFavorited = false;
+                        _isFavorited = false;
                       });
                     }).catchError((error) {
                       success = false;

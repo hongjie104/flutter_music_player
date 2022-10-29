@@ -16,7 +16,7 @@ class _RankSongListState extends State<RankSongList> {
 
   _getSongs() async {
     await MusicDao.getTopSongs(widget.topId).then((result) {
-      // 界面未加载，返回。
+      // 界面未加载,返回。
       if (!mounted) return;
 
       setState(() {
@@ -44,7 +44,7 @@ class _RankSongListState extends State<RankSongList> {
           ? Center(child: CircularProgressIndicator())
           : ListView.builder(
               itemCount: _songs.length,
-              itemExtent: 70.0, // 设定item的高度，这样可以减少高度计算。
+              itemExtent: 70.0, // 设定item的高度,这样可以减少高度计算。
               itemBuilder: (context, index) => SongItemTile(_songs, index),
             ),
     );

@@ -14,13 +14,14 @@ class MusicListener {
   Function onPosition;
   Function onStateChanged;
   Function onError;
-  MusicListener(
-      {this.getName,
-      this.onLoading,
-      this.onStart,
-      this.onPosition,
-      this.onStateChanged,
-      this.onError});
+  MusicListener({
+    this.getName,
+    this.onLoading,
+    this.onStart,
+    this.onPosition,
+    this.onStateChanged,
+    this.onError,
+  });
 }
 
 class MusicController with ChangeNotifier {
@@ -133,12 +134,12 @@ class MusicController with ChangeNotifier {
 
     if (isContinue) {
       play(path: this.url);
-    } else {  // 如果是播放新歌，就重新获取播放地址。
+    } else {
+      // 如果是播放新歌,就重新获取播放地址。
       SongUtil.getPlayPath(song).then((playPath) {
-      play(path: playPath);
-    });
+        play(path: playPath);
+      });
     }
-    
   }
 
   Future play({String path}) async {
@@ -146,28 +147,28 @@ class MusicController with ChangeNotifier {
       print('Error: empty url!');
       return;
     }
-    // 如果参数url为空，或者和之前一样，说明是继续播放当前url
+    // 如果参数url为空,或者和之前一样,说明是继续播放当前url
     bool isContinue = path == null || path == this.url;
     if (!isContinue) {
       this.url = path;
       if (playerState != PlayerState.loading) {
-        await audioPlayer.stop(); // 注意这儿要用await，不然异步到后面，状态会不对。
+        await audioPlayer.stop(); // 注意这儿要用await,不然异步到后面,状态会不对。
       }
-      // 不是继续播放，就进入加载状态
+      // 不是继续播放,就进入加载状态
       duration = 0;
       notifyMusicListeners(
           (listener) => listener.onStateChanged(PlayerState.loading));
     }
 
     if (path != null && path == this.url && playerState == PlayerState.paused) {
-      print('播放相同的歌曲，从暂停界面切换过来，继续暂停。 path: $path , url: $url ');
+      print('播放相同的歌曲,从暂停界面切换过来,继续暂停。 path: $path , url: $url ');
       pause();
       notifyMusicListeners((listener) => listener.onStart(duration));
       notifyMusicListeners((listener) => listener.onPosition(position));
     } else {
       bool isLocal = !this.url.startsWith('http');
       print("start play: $url , isLocal: $isLocal, playerState: $playerState ");
-      await audioPlayer.play(this.url, isLocal: isLocal);
+      await audioPlayer._play(this.url, isLocal: isLocal);
     }
   }
 
@@ -200,10 +201,10 @@ class MusicController with ChangeNotifier {
     Map item;
     if (playList.cycleType == CycleType.random) {
       item = playList.randomNext();
-    } else{
+    } else {
       item = playList.next();
     }
-    
+
     if (item != null) {
       startSong();
     }
@@ -215,10 +216,10 @@ class MusicController with ChangeNotifier {
     Map item;
     if (playList.cycleType == CycleType.random) {
       item = playList.randomNext();
-    } else{
+    } else {
       item = playList.previous();
     }
-    
+
     if (item != null) {
       startSong();
     }
@@ -243,7 +244,7 @@ class MusicController with ChangeNotifier {
 
   void onComplete() {
     Map nextSong;
-    // 如果单曲循环，就还是当前歌曲。
+    // 如果单曲循环,就还是当前歌曲。
     if (playList.cycleType == CycleType.one) {
       nextSong = this.getCurrentSong();
       startSong();
@@ -259,10 +260,10 @@ class MusicController with ChangeNotifier {
 
   void saveHistory() {
     // 将上一首保存到历史记录
-    print("saveHistory, 当前歌曲播放时长：${position~/1000}");
-    if (position > 30*1000) { // 超过30秒才保存
+    print("saveHistory, 当前歌曲播放时长：${position ~/ 1000}");
+    if (position > 30 * 1000) {
+      // 超过30秒才保存
       HistoryDB().addHistory(this.song);
     }
-    
   }
 }

@@ -44,17 +44,18 @@ class _TestPageState extends State<TestPage> {
                 ],
               ),
             ),
-            Positioned(   // 发现一个现象：如果这儿不是Positioned那么上面的Positioned布局就会失效，报overflow异常。
-              bottom: 100.0,
-              left: 20.0,
-              right: 20.0,
-              child: RaisedButton(
-              child: Text("单独的页面"),
-              onPressed: () {
-                Navigator.of(context)
-                    .push(MaterialPageRoute(builder: (context) => TestPage2()));
-              },
-            ))
+            Positioned(
+                // 发现一个现象：如果这儿不是Positioned那么上面的Positioned布局就会失效,报overflow异常。
+                bottom: 100.0,
+                left: 20.0,
+                right: 20.0,
+                child: RaisedButton(
+                  child: Text("单独的页面"),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => TestPage2()));
+                  },
+                ))
           ],
         ));
   }

@@ -26,7 +26,8 @@ class PlayerPage extends StatefulWidget {
   // 外部跳转统一经过这儿
   static void gotoPlayer(BuildContext context, {List list, int index}) {
     if (list != null) {
-      Provider.of<MusicController>(context, listen: false).setPlayList(list, index);
+      Provider.of<MusicController>(context, listen: false)
+          .setPlayList(list, index);
     }
     NavigatorUtil.push(context, PlayerPage._());
   }
@@ -76,15 +77,15 @@ class _PlayerPageState extends State<PlayerPage>
 
   _onStartLoading() {
     song = musicController.getCurrentSong();
-    // 不要把函数调用放在build之中，不然每次刷新都会调用！！
+    // 不要把函数调用放在build之中,不然每次刷新都会调用！！
     songImage = SongUtil.getSongImage(song, size: imageSize);
     artistNames = SongUtil.getArtistNames(song);
 
-    print("StartSong: ${song['name']}， imageSize: $imageSize");
+    print("StartSong: ${song['name']}, imageSize: $imageSize");
 
     if (songImage == null || songImage.isEmpty) {
       MusicDao.getSongDetail(song['id'].toString()).then((songDetail) {
-        // 异步任务要判断mouted，可能结果返回时界面关闭了。
+        // 异步任务要判断mouted,可能结果返回时界面关闭了。
         if (mounted && songDetail != null) {
           setState(() {
             songImage = SongUtil.getSongImage(songDetail, size: imageSize);
@@ -113,7 +114,7 @@ class _PlayerPageState extends State<PlayerPage>
         onPosition: (position) {
           //print('MusicListener in PlayerPager, position: $position, duration: $duration');
           if (!isTaping) {
-            // 如果手指拖动，就不通过播放器更新状态，以免抖动。
+            // 如果手指拖动,就不通过播放器更新状态,以免抖动。
             _lyricPage.updatePosition(position);
             setState(() => this.position = position);
           }
@@ -153,7 +154,7 @@ class _PlayerPageState extends State<PlayerPage>
     super.dispose();
   }
 
-  // 将要播放和正在播放，用于播放按钮的状态控制。
+  // 将要播放和正在播放,用于播放按钮的状态控制。
   // 中途切歌会调用一下stoppted
   bool isGoingPlaying() {
     return playerState != PlayerState.paused;
@@ -209,15 +210,16 @@ class _PlayerPageState extends State<PlayerPage>
   }
 
   Widget _buildCDCover() {
-    return IgnorePointer(child:Container(
-        width: imageSize.toDouble()+24,
-        height: imageSize.toDouble()+24,
-        decoration: BoxDecoration(
-            border: Border.all(
-              width: 8,
-              color: Colors.black.withOpacity(0.4),
-            ),
-            shape: BoxShape.circle)));
+    return IgnorePointer(
+        child: Container(
+            width: imageSize.toDouble() + 24,
+            height: imageSize.toDouble() + 24,
+            decoration: BoxDecoration(
+                border: Border.all(
+                  width: 8,
+                  color: Colors.black.withOpacity(0.4),
+                ),
+                shape: BoxShape.circle)));
   }
 
   Widget _buildProgressIndicator() {
@@ -253,13 +255,13 @@ class _PlayerPageState extends State<PlayerPage>
                             : musicController.play()
                       },
                   child: Hero(
-                      tag: 'FloatingPlayer',
-                      //child: ClipOval(child: _getSongImage(BoxFit.cover))
-                      // 加边框的效果
-                      child:ClipOval(child: _getSongImage(BoxFit.cover)),
-                      )),
+                    tag: 'FloatingPlayer',
+                    //child: ClipOval(child: _getSongImage(BoxFit.cover))
+                    // 加边框的效果
+                    child: ClipOval(child: _getSongImage(BoxFit.cover)),
+                  )),
             ),
-            _buildCDCover(),  // cd控件会挡住点击事件
+            _buildCDCover(), // cd控件会挡住点击事件
             _buildProgressIndicator(),
           ],
         ));
@@ -296,7 +298,7 @@ class _PlayerPageState extends State<PlayerPage>
     // 循环方式
     CycleType cycleType = musicController.playList.cycleType;
     return Container(
-        padding: EdgeInsets.only(top:8.0, bottom:24.0),
+        padding: EdgeInsets.only(top: 8.0, bottom: 24.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[

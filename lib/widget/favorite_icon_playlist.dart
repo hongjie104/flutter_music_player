@@ -3,46 +3,38 @@ import 'package:flutter_music_player/dao/music_db_playlist.dart';
 
 class FavoritePlayListIcon extends StatefulWidget {
   final Map play;
-  const FavoritePlayListIcon(this.play, {Key key}) : super(key: key);
+  const FavoritePlayListIcon(this.play, {Key? key}) : super(key: key);
 
   @override
   _FavoritePlayListIconState createState() => _FavoritePlayListIconState();
 }
 
 class _FavoritePlayListIconState extends State<FavoritePlayListIcon> {
-  bool isFavorited = false;
-  Map play;
-
-  @override
-  void initState() {
-    super.initState();
-    //print('FavoritePlayListIcon initState');
-  }
+  bool _isFavorited = false;
+  late Map _play;
 
   void _checkFavorite() {
-    PlayListDB().getPlayListById(play['id']).then((fav) {
+    PlayListDB().getPlayListById(_play['id']).then((Map<String, dynamic>? fav) {
       //print('getFavoriteById : $fav');
       setState(() {
-        isFavorited = fav != null;
+        _isFavorited = fav != null;
       });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    if (widget.play != play) {
-      play = widget.play;
+    if (widget.play != _play) {
+      _play = widget.play;
       _checkFavorite();
     }
     return IconButton(
       icon: Icon(
         Icons.favorite,
-        color: isFavorited
-            ? Colors.white
-            : Colors.white30,
+        color: _isFavorited ? Colors.white : Colors.white30,
       ),
       onPressed: () {
-        if (this.isFavorited) {
+        if (this._isFavorited) {
           _cancelFavorite(context);
         } else {
           _addFavorite(context);
@@ -55,7 +47,7 @@ class _FavoritePlayListIconState extends State<FavoritePlayListIcon> {
     PlayListDB().addPlayList(widget.play).then((re) {
       print('addFavorite re: $re , play: ${widget.play}');
       setState(() {
-        isFavorited = true;
+        _isFavorited = true;
       });
     }).catchError((error) {
       print('addFavorite error: $error');
@@ -65,12 +57,11 @@ class _FavoritePlayListIconState extends State<FavoritePlayListIcon> {
   void _cancelFavorite(context) {
     PlayListDB().deletePlayList(widget.play['id']).then((re) {
       setState(() {
-        isFavorited = false;
+        _isFavorited = false;
       });
     }).catchError((error) {
       print('deleteFavorite error: $error');
       throw Exception('取消收藏失败');
     });
   }
-
 }

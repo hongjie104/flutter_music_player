@@ -9,7 +9,7 @@ class PlayListTabPage extends StatefulWidget {
   final String heroTag;
   final String error;
   PlayListTabPage(
-      {Key key, @required this.type, this.heroTag = 'from_list', this.error})
+      {Key key, required this.type, this.heroTag = 'from_list', this.error})
       : super(key: key);
 
   @override
@@ -30,7 +30,7 @@ class _PlayListTabPageState extends State<PlayListTabPage> {
       print('Failed: $e');
     }
 
-    // 界面未加载或者已关闭，返回。
+    // 界面未加载或者已关闭,返回。
     if (!mounted) return;
     setState(() {
       _playlist = _playlist;
@@ -60,7 +60,7 @@ class _PlayListTabPageState extends State<PlayListTabPage> {
     } else {
       return GridView.builder(
         itemCount: this._playlist == null ? 0 : this._playlist.length,
-        padding: EdgeInsets.all(6.0), // 四周边距，注意Card也有默认的边距
+        padding: EdgeInsets.all(6.0), // 四周边距,注意Card也有默认的边距
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             // 网格样式
             crossAxisCount: 2, // 列数

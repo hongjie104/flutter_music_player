@@ -7,22 +7,22 @@ import 'package:flutter_music_player/utils/shared_preference_util.dart';
 import 'gradient_text.dart';
 
 class LyricPage extends StatefulWidget {
-  _LyricPageState _state;
+  _LyricPageState? _state;
 
-  LyricPage({Key key}) : super(key: key);
+  LyricPage({Key? key}) : super(key: key);
 
   @override
   _LyricPageState createState() {
     _state = _LyricPageState();
-    return _state;
+    return _state!;
   }
 
-  // 对比发现，从外面调用触发build的次数要少，而不是从父控件传入position。
+  // 对比发现,从外面调用触发build的次数要少,而不是从父控件传入position。
 
   int updatePositionCount = 0;
   void updatePosition(int position, {isTaping: false}) {
     //print('updatePosition: $position');
-    if (_state == null || _state.lyric == null) {
+    if (_state == null) {
       if (updatePositionCount > 5) {
         return;
       }
@@ -33,7 +33,7 @@ class LyricPage extends StatefulWidget {
       });
     } else {
       updatePositionCount = 0;
-      _state.updatePosition(position, isTaping: isTaping);
+      _state!.updatePosition(position, isTaping: isTaping);
     }
   }
 
@@ -50,7 +50,7 @@ class LyricPage extends StatefulWidget {
       });
     } else {
       updateSongCount = 0;
-      _state.updateSong(song);
+      _state!.updateSong(song);
     }
   }
 }
@@ -125,7 +125,7 @@ class _LyricPageState extends State<LyricPage> {
     } else if (lyric == null) {
       return _buildInfo('歌词加载中...');
     } else if (lyric.items.length == 0) {
-      return _buildInfo('...纯音乐，无歌词...');
+      return _buildInfo('...纯音乐,无歌词...');
     } else {
       isItemsEmpty = false;
     }
@@ -187,8 +187,8 @@ class _LyricPageState extends State<LyricPage> {
     }
   }
 
-  /// 比较播放位置和歌词时间戳，获取当前是哪条歌词。
-  /// milliseconds 当前播放位置，单位：毫秒
+  /// 比较播放位置和歌词时间戳,获取当前是哪条歌词。
+  /// milliseconds 当前播放位置,单位：毫秒
   int getIndexByTime(int milliseconds) {
     if (lyric == null ||
         lyric.items.length == 0 ||
@@ -197,7 +197,7 @@ class _LyricPageState extends State<LyricPage> {
       return -1;
     }
 
-    // 选取比较的范围，不用每次都从头遍历。
+    // 选取比较的范围,不用每次都从头遍历。
     int start;
     int end;
     if (_currentIndex <= 1 || _currentIndex >= lyric.items.length) {
@@ -277,13 +277,13 @@ class _LyricPageState extends State<LyricPage> {
       scrollTo(_currentIndex);
 
       if (isTaping) {
-        // 如果是手动拖动，就要控制滚动的频率。
+        // 如果是手动拖动,就要控制滚动的频率。
         delayNextScroll();
       }
     }
   }
 
-  /// 在手动拖动时，控制滚动的频率。不然多次动画叠在一起界面卡顿。
+  /// 在手动拖动时,控制滚动的频率。不然多次动画叠在一起界面卡顿。
   bool isScrolling = false;
   int lastScrollPosition = -1;
   void delayNextScroll() {

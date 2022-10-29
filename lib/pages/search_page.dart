@@ -76,7 +76,7 @@ class _SearchPageState extends State<SearchPage> {
                 ? Center(child: CircularProgressIndicator())
                 : ListView.builder(
                     itemCount: this._songs.length,
-                    itemExtent: 70.0, // 设定item的高度，这样可以减少高度计算。
+                    itemExtent: 70.0, // 设定item的高度,这样可以减少高度计算。
                     itemBuilder: (context, index) =>
                         SongItemTile(_songs, index)),
             _buildSpeechAnim(),

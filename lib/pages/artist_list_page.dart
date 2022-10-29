@@ -16,7 +16,7 @@ class _ArtistListPageState extends State<ArtistListPage> {
   List artistList = [];
   _getSongs() async {
     await MusicDao.getArtistList().then((result) {
-      // 界面未加载，返回。
+      // 界面未加载,返回。
       if (!mounted) return;
 
       setState(() {

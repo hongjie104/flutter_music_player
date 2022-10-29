@@ -47,14 +47,14 @@ class _ArtistDetailPageState extends State<ArtistDetailPage> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-        onWillPop: _beforePop,
-        child: Scaffold(
-            body: CustomScrollView(
-              slivers: _buildSlivers(),
-              controller: _controller,
-            ),
-          ),
-        );
+      onWillPop: _beforePop,
+      child: Scaffold(
+        body: CustomScrollView(
+          slivers: _buildSlivers(),
+          controller: _controller,
+        ),
+      ),
+    );
   }
 
   List<Widget> _buildSlivers() {
@@ -119,9 +119,10 @@ class _ArtistDetailPageState extends State<ArtistDetailPage> {
   Widget _buildDesc() {
     return SliverToBoxAdapter(
         child: Container(
-          padding: EdgeInsets.all(16.0),
-          child:Text(_artist['desc'],
-            style: TextStyle(color: Colors.black87, fontSize: 13.0, height: 1.2))));
+            padding: EdgeInsets.all(16.0),
+            child: Text(_artist['desc'],
+                style: TextStyle(
+                    color: Colors.black87, fontSize: 13.0, height: 1.2))));
   }
 
   Widget _buildList() {
@@ -136,7 +137,7 @@ class _ArtistDetailPageState extends State<ArtistDetailPage> {
   }
 
   Future<bool> _beforePop() async {
-    // 在页面退出的时候回到顶部，不然Hero动画之前的图片会空白。
+    // 在页面退出的时候回到顶部,不然Hero动画之前的图片会空白。
     _controller.jumpTo(0);
     return true;
   }

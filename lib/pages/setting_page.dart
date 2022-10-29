@@ -167,7 +167,7 @@ class _SettingPageState extends State<SettingPage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           Text(
-            downloadOnFav ? '下载mp3，无网也可听' : '不下载文件',
+            downloadOnFav ? '下载mp3,无网也可听' : '不下载文件',
             style: TextStyle(
                 color: downloadOnFav ? mainColor : Colors.black45,
                 fontSize: 15.0),

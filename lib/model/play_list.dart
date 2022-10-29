@@ -16,7 +16,7 @@ class PlayList {
     this.index = index;
   }
 
-  Map getCurrentSong() {
+  Map? getCurrentSong() {
     if (index < 0 || index >= songList.length) {
       return null;
     }
@@ -53,7 +53,7 @@ class PlayList {
     if (songList.length > 1) {
       rdmIndex = Random().nextInt(songList.length);
       if (rdmIndex == index) {
-        // 如果和当前index相同，就+1。
+        // 如果和当前index相同,就+1。
         rdmIndex++;
         if (rdmIndex >= songList.length) {
           rdmIndex = 0;
@@ -80,10 +80,16 @@ class PlayList {
 
   String getCycleName() {
     String cycleName;
-    switch(cycleType) {
-      case CycleType.queue: cycleName = '顺序播放';break;
-      case CycleType.one: cycleName = '单曲循环';break;
-      case CycleType.random: cycleName = '随机播放';break;
+    switch (cycleType) {
+      case CycleType.queue:
+        cycleName = '顺序播放';
+        break;
+      case CycleType.one:
+        cycleName = '单曲循环';
+        break;
+      case CycleType.random:
+        cycleName = '随机播放';
+        break;
     }
     return cycleName;
   }

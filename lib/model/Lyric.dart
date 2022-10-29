@@ -1,14 +1,15 @@
 class Lyric {
-  String lyric;
+  String? lyric;
   List<LyricItem> items = [];
 
   Lyric(this.lyric) {
     build();
   }
 
-  Lyric.empty();  // 空的构造函数
+  Lyric.empty(); // 空的构造函数
 
-  Lyric.test() {  // test数据的构造函数
+  Lyric.test() {
+    // test数据的构造函数
     items = List.generate(
         50, (index) => LyricItem(index, index * 1000, index.toString() * 10));
   }
@@ -23,56 +24,55 @@ class Lyric {
   }
 
   void build() {
-    if (lyric == null || lyric.length == 0) {
+    if (lyric == null || lyric!.isEmpty) {
       return;
     }
 
-    List<String> lines = lyric.split('\n');
+    List<String> lines = lyric!.split('\n');
     int index = 0;
     lines.forEach((line) {
       List<String> strs = line.split(']');
-      if (strs.length >= 2) {   // 可能一行多句歌词的情况
-        String content = strs[strs.length -1];
+      if (strs.length >= 2) {
+        // 可能一行多句歌词的情况
+        String content = strs[strs.length - 1];
 
-        for(int i=0; i<strs.length -1; i++) {
+        for (int i = 0; i < strs.length - 1; i++) {
           String time = strs[i].replaceAll('[', '');
           int position = _getPositon(time);
-          if(position>=0) { // 如果时间戳不正确就丢掉
-            this.items.add(new LyricItem(index, position, content));
+          if (position >= 0) {
+            // 如果时间戳不正确就丢掉
+            this.items.add(LyricItem(index, position, content));
             index++;
           } else {
             //print('Lyric: 不解析的歌词：$line');
           }
         }
-        
       }
     });
 
     _sortPosition();
 
     _initDuraton();
-
   }
 
-  /// 对position排序，有些SB歌词时间戳居然不是有序的。
+  /// 对position排序,有些SB歌词时间戳居然不是有序的。
   /// 或者一行多句歌词的情况
-  _sortPosition(){
+  _sortPosition() {
     bool isSorted = true; // 大部分是有序的
-    for(int i=0; i<items.length-1; i++) {
-      if (items[i+1].position < items[i].position) {
+    for (int i = 0; i < items.length - 1; i++) {
+      if (items[i + 1].position < items[i].position) {
         isSorted = false;
       }
     }
 
     if (!isSorted) {
-      print('歌词无序，进行排序');
+      print('歌词无序,进行排序');
       items.sort((left, right) => left.position - right.position);
 
-      for(int i=0; i<items.length; i++) {
+      for (int i = 0; i < items.length; i++) {
         items[i].index = i;
       }
     }
-
   }
 
   _getPositon(String str) {
@@ -100,31 +100,32 @@ class Lyric {
 
   // 计算每段歌词的显示时间
   void _initDuraton() {
-    for(int i=0; i<items.length-1; i++) {
+    for (int i = 0; i < items.length - 1; i++) {
       LyricItem item = items[i];
-      item.duration = items[i+1].position - item.position;
+      item.duration = items[i + 1].position - item.position;
 
       //print(item);
     }
     // 最后一行怎样计算长度？？
     if (items.length > 1) {
-      LyricItem preItem = items[items.length -2];
-      LyricItem lastItem = items[items.length -1];
+      LyricItem preItem = items[items.length - 2];
+      LyricItem lastItem = items[items.length - 1];
       int duration = preItem.duration;
       if (preItem.content.length > 0) {
         duration = duration * lastItem.content.length ~/ preItem.content.length;
       }
       lastItem.duration = duration;
     }
-    
   }
 }
 
 class LyricItem {
-  int index;
-  int position;
-  String content;
-  int duration; // 歌词显示的时间长度
+  late int index;
+  late int position;
+  late String content;
+
+  /// 歌词显示的时间长度
+  int duration = 0;
 
   LyricItem(this.index, this.position, this.content);
 

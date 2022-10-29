@@ -14,25 +14,27 @@ description: A new Flutter project.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.2.2 <3.0.0"
+  sdk: ">=2.18.2 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  audioplayer:
-    path: ./audioplayer
-  flutter_swiper: ^1.1.6
-  cached_network_image: ^3.0.0
-  video_player: ^2.1.1
-  crypto: ^3.0.1
-  connectivity: ^3.0.3 # 网络监测
-  orientation: ^1.3.0 # 屏幕横竖屏
-  sqflite: ^2.0.0+3
-  dio: ^4.0.0
-  fluttertoast: ^8.0.6
-  provider: ^5.0.0
-  shared_preferences: ^2.0.5
-  flutter_screenutil: ^5.0.0
+  # audioplayer:
+  #   path: ./audioplayer
+  audioplayers: ^1.1.1
+  flutter_swiper_null_safety_flutter3: ^3.0.0
+  cached_network_image: ^3.2.1
+  video_player: ^2.4.7
+  crypto: ^3.0.2
+  connectivity_plus: ^3.0.2
+  # orientation: ^1.3.0 # 屏幕横竖屏
+  sqflite: ^2.2.0+2
+  dio: ^4.0.6
+  # fluttertoast: ^8.0.6
+  oktoast: ^3.3.1
+  provider: ^6.0.4
+  shared_preferences: ^2.0.15
+  flutter_screenutil: ^5.6.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

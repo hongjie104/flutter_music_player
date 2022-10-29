@@ -33,7 +33,6 @@ class MyVideoPlayer extends StatefulWidget {
   _MyVideoPlayerState createState() => _MyVideoPlayerState();
 }
 
-
 class _MyVideoPlayerState extends State<MyVideoPlayer> {
   VideoState _playerState = VideoState.idle;
   int position = 0;
@@ -48,15 +47,14 @@ class _MyVideoPlayerState extends State<MyVideoPlayer> {
     _controller = widget.controller;
     _playerState = widget.playerState;
 
-    // 如果controller来自其他页面，那么退出的时候就不要把它销毁了，不然上个页面播不了了。
+    // 如果controller来自其他页面,那么退出的时候就不要把它销毁了,不然上个页面播不了了。
     isFromOtherPage = widget.controller != null;
 
-    // 从其他页面而来，继续播放，现成的controller，但要添加进度监听。
+    // 从其他页面而来,继续播放,现成的controller,但要添加进度监听。
     if (isFromOtherPage) {
       _addControllerListener();
       _showButtonsAndAutoHide(autoHideTime);
     }
-
   }
 
   void _addControllerListener() {
@@ -80,7 +78,7 @@ class _MyVideoPlayerState extends State<MyVideoPlayer> {
     _controller.addListener(videoListener);
   }
 
-  // 当播放一个新的视频时，初始化Controller
+  // 当播放一个新的视频时,初始化Controller
   _initMVController() async {
     // 获取到视频地址
     String url = await MusicDao.getMVDetail(widget.mv['id']);
@@ -92,7 +90,8 @@ class _MyVideoPlayerState extends State<MyVideoPlayer> {
   Future _play() async {
     // 播放视频的时候把正在播放的音乐和视频暂停
     Provider.of<MusicController>(context, listen: false).pause();
-    VideoPlayerController _oldController = Provider.of<VideoControllerProvider>(context).getController();
+    VideoPlayerController _oldController =
+        Provider.of<VideoControllerProvider>(context).getController();
     if (_oldController != null) {
       _oldController.pause();
     }
@@ -106,7 +105,7 @@ class _MyVideoPlayerState extends State<MyVideoPlayer> {
       await _initMVController();
     }
 
-    // 开始播放的时候，切换全局controller，停掉上一个视频。
+    // 开始播放的时候,切换全局controller,停掉上一个视频。
     Provider.of<VideoControllerProvider>(context).setController(_controller);
     _controller.play().then((_) {
       setState(() {
@@ -130,13 +129,14 @@ class _MyVideoPlayerState extends State<MyVideoPlayer> {
       // 去掉当前页面的进度监听
       _controller.removeListener(videoListener);
 
-      // 视频从其他页面而来，就不要dispose，不然上个页面播不了了。
+      // 视频从其他页面而来,就不要dispose,不然上个页面播不了了。
       if (!isFromOtherPage) {
         if (_playerState == VideoState.playing) {
           _controller.pause();
         }
         _controller.dispose();
-        Provider.of<VideoControllerProvider>(context).clearController(_controller);
+        Provider.of<VideoControllerProvider>(context)
+            .clearController(_controller);
         _controller = null;
       }
     }
@@ -167,9 +167,7 @@ class _MyVideoPlayerState extends State<MyVideoPlayer> {
             _showButtonsAndAutoHide(autoHideTime, clearTimer: true);
           }
         },
-        child: Container(
-          color: Colors.black,
-          child:VideoPlayer(_controller)),
+        child: Container(color: Colors.black, child: VideoPlayer(_controller)),
       ));
 
       if (isShowButton) {
@@ -197,7 +195,7 @@ class _MyVideoPlayerState extends State<MyVideoPlayer> {
   Timer showButtonTimer;
   bool isShowButton = true;
   int startTime = 0;
-  int nextEventAfter = 0; // 如果后面点击了，就延长显示时间
+  int nextEventAfter = 0; // 如果后面点击了,就延长显示时间
   _showButtonsAndAutoHide(int milliseconds, {clearTimer: false}) {
     if (clearTimer) {
       startTime = 0;
@@ -217,7 +215,7 @@ class _MyVideoPlayerState extends State<MyVideoPlayer> {
       _showButtons(true);
     }
 
-    //showButtonTimer?.cancel(); // 如果上一个还没结束，就取消掉。
+    //showButtonTimer?.cancel(); // 如果上一个还没结束,就取消掉。
     //print('start Timer');
     startTime = now;
     showButtonTimer = Timer(Duration(milliseconds: milliseconds), () {
@@ -227,7 +225,7 @@ class _MyVideoPlayerState extends State<MyVideoPlayer> {
       startTime = 0;
       //print('Timer out, nextEventAfter: $nextEventAfter');
 
-      // 如果在等待的中途再次点击了，就延长时间。
+      // 如果在等待的中途再次点击了,就延长时间。
       if (nextEventAfter > 500) {
         // 太短就没必要延长了
         _showButtonsAndAutoHide(nextEventAfter);

@@ -3,17 +3,17 @@ import 'package:flutter_music_player/dao/music_db_history.dart';
 import 'package:flutter_music_player/widget/song_item_tile.dart';
 
 class HistoryPage extends StatefulWidget {
-  HistoryPage({Key key}) : super(key: key);
+  HistoryPage({Key? key}) : super(key: key);
 
   _HistoryPageState createState() => _HistoryPageState();
 }
 
 class _HistoryPageState extends State<HistoryPage> {
-  List _songs;
+  List? _songs;
 
   _getSongs() async {
     HistoryDB().getHistoryList().then((result) {
-      // 界面未加载，返回。
+      // 界面未加载,返回。
       if (!mounted) return;
 
       setState(() {
@@ -56,7 +56,7 @@ class _HistoryPageState extends State<HistoryPage> {
     if (_songs == null) {
       return Container();
     }
-    if (_songs.length == 0) {
+    if (_songs!.length == 0) {
       return Center(
           child: Text(
         '您还没有播放过歌曲',
@@ -65,9 +65,9 @@ class _HistoryPageState extends State<HistoryPage> {
       ));
     } else {
       return ListView.builder(
-        itemCount: this._songs.length,
-        itemExtent: 70.0, // 设定item的高度，这样可以减少高度计算。
-        itemBuilder: (context, index) => SongItemTile(_songs, index),
+        itemCount: _songs!.length,
+        itemExtent: 70.0, // 设定item的高度,这样可以减少高度计算。
+        itemBuilder: (context, index) => SongItemTile(_songs!, index),
       );
     }
   }

@@ -1,8 +1,9 @@
 import 'dart:io';
 import 'dart:async';
 import 'package:path_provider/path_provider.dart';
+
 /// 本地文件工具类
-class FileUtil{
+class FileUtil {
   static final String songsDir = "songs";
   static final String lyricDir = "lyrics";
   static final String music = ".mp3";
@@ -14,17 +15,16 @@ class FileUtil{
     return '$root/$subDirPath';
   }
 
-
   /// 相对app目录之下创建子目录
   static Future<Directory> createLocalDir(String subDirPath) async {
     String dirPath = await getSubDirPath(subDirPath);
     Directory dir = new Directory(dirPath);
-    if (await dir.exists()) {  // 如果目录不存在，就创建
+    if (await dir.exists()) {
+      // 如果目录不存在,就创建
       return dir;
     } else {
       return dir.create(recursive: true);
     }
-    
   }
 
   /// 判断文件是否存在
@@ -40,14 +40,13 @@ class FileUtil{
     return filePath;
   }
 
-    /// 获取收藏歌曲歌词
+  /// 获取收藏歌曲歌词
   static Future<String> getLyricLocalPath(int songId) async {
     String dir = await getSubDirPath(lyricDir);
     String fileName = '$songId.lyric';
     String filePath = '$dir/$fileName';
     return filePath;
   }
-
 
   /// 删除文件
   static Future<bool> deleteLocalSong(Map song) async {
@@ -66,7 +65,6 @@ class FileUtil{
     return true;
   }
 
-
   /// 判断文件是否超时
   static bool isFileTimeout(File file, Duration duration) {
     DateTime lastModified = file.lastModifiedSync();
@@ -78,5 +76,4 @@ class FileUtil{
     DateTime now = DateTime.now();
     return now.isAfter(lastTime.add(duration));
   }
-
 }

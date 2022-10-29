@@ -79,13 +79,13 @@ class _FullScreenVideoPlayerState extends State<FullScreenVideoPlayer> {
       return Future.value(true);
     }
 
-    _switchScreen(false).then((_){
+    _switchScreen(false).then((_) {
       /* Future.delayed(Duration(seconds: 1)).then((_){
         Navigator.pop(context);
       }); */
     });
 
-    // 返回false，不关闭，走上面的异步操作。
+    // 返回false,不关闭,走上面的异步操作。
     return Future.value(false);
   }
 
@@ -143,7 +143,7 @@ class _FullScreenVideoPlayerState extends State<FullScreenVideoPlayer> {
             ? DeviceOrientation.landscapeRight
             : DeviceOrientation.portraitUp)
         .then((_) {
-      // 全屏时隐藏默认的状态栏，返回时恢复
+      // 全屏时隐藏默认的状态栏,返回时恢复
       SystemChrome.setEnabledSystemUIOverlays(
           this.isFullScreen ? [] : SystemUiOverlay.values);
 

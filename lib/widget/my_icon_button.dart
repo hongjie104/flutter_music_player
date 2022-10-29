@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-/// 点击会有动画的按钮，并支持图片切换。
+/// 点击会有动画的按钮,并支持图片切换。
 class MyIconButton extends StatefulWidget {
   final Function onPressed;
   final List<IconData> icons;
@@ -11,7 +11,7 @@ class MyIconButton extends StatefulWidget {
   final bool animEnable;
 
   ///   * [icon], 如果只需要展示一张图片。
-  ///   * [icons], 如果要展示多张图片，点击时会依次向后切换。
+  ///   * [icons], 如果要展示多张图片,点击时会依次向后切换。
   MyIconButton(
       {Key key,
       this.icon,
@@ -31,7 +31,7 @@ class _MyIconButtonState extends State<MyIconButton>
   Animation animation;
   AnimationController _controller;
   int iconIndex = 0;
-  bool isAnimRunning = false; // 动画中途不要被打断，避免闪烁的情况。
+  bool isAnimRunning = false; // 动画中途不要被打断,避免闪烁的情况。
   final double defaultOpacity = 0.8;
 
   @override
@@ -47,7 +47,7 @@ class _MyIconButtonState extends State<MyIconButton>
     animation = new Tween(begin: 0.0, end: 1.0).animate(_controller);
     animation.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
-        // 如果只有一张图，不需要动画
+        // 如果只有一张图,不需要动画
         if (widget.icons != null && widget.icons.length > 1) {
           int nextIndex;
           if (iconIndex != widget.iconIndex) {
@@ -85,7 +85,7 @@ class _MyIconButtonState extends State<MyIconButton>
 
     if (!isAnimRunning && widget.iconIndex != iconIndex) {
       //iconIndex = widget.iconIndex;
-      // 当外部有状态改变时，自动触发动画
+      // 当外部有状态改变时,自动触发动画
       startAnim();
     }
 

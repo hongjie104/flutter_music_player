@@ -22,52 +22,54 @@ class MusicDao {
   static const URL_MV_PERSONAL = '$URL_ROOT/personalized/mv';
   static const URL_MV_DETAIL = '$URL_ROOT/mv/detail?mvid=';
   static const URL_MV_AREA = '$URL_ROOT/mv/all?area=';
-  static const URL_MV_163 = '$URL_ROOT/mv/exclusive/rcmd'; // 网易出品mv
+
+  /// 网易出品mv
+  static const URL_MV_163 = '$URL_ROOT/mv/exclusive/rcmd';
 
   static const URL_SEARCH = '$URL_ROOT/search?keywords=';
 
-  static const URL_GET_TOPLIST =
-      '$URL_ROOT/toplist/detail'; // 获取排行和摘要，或者/toplist
+  /// 获取排行和摘要,或者/toplist
+  static const URL_GET_TOPLIST = '$URL_ROOT/toplist/detail';
 
   static const URL_TOP_ARTISTS = '$URL_ROOT/toplist/artist';
   static const URL_ARTIST_DETAIL = '$URL_ROOT/artists?id=';
 
   static Future<List> getPlayList(String cat) async {
-    var data = await HttpUtil.getJsonData(URL_PLAY_LIST + cat);
+    final data = await HttpUtil.getJsonData(URL_PLAY_LIST + cat);
     List playlist = data['playlists'];
     return playlist;
   }
 
   static Future<List> getPlayListDetail(int listId) async {
-    var data = await HttpUtil.getJsonData('$URL_PLAY_LIST_DETAIL$listId');
+    final data = await HttpUtil.getJsonData('$URL_PLAY_LIST_DETAIL$listId');
     List playlist = data['playlist']['tracks'];
     return playlist;
   }
 
   static Future<List> getNewSongs() async {
-    var data = await HttpUtil.getJsonData(URL_NEW_SONGS);
+    final data = await HttpUtil.getJsonData(URL_NEW_SONGS);
     List songList = data['result'];
     return songList;
   }
 
   static Future<List> getRecommendSongs() async {
     print('$URL_RECOMMEND_SONGS');
-    var data = await HttpUtil.getJsonData('$URL_RECOMMEND_SONGS');
+    final data = await HttpUtil.getJsonData('$URL_RECOMMEND_SONGS');
     List songList = data['playlist']['tracks'];
     return songList;
   }
 
   static Future<List> getTopSongs(int listId) async {
     print('$URL_TOP_SONGS$listId');
-    var data = await HttpUtil.getJsonData('$URL_TOP_SONGS$listId');
+    final data = await HttpUtil.getJsonData('$URL_TOP_SONGS$listId');
     List songList = data['playlist']['tracks'];
     return songList;
   }
 
-  // 获取歌词
-  static Future<Lyric> getLyric(int songId) async {
+  /// 获取歌词
+  static Future<Lyric?> getLyric(int songId) async {
     File cache = File(await FileUtil.getLyricLocalPath(songId));
-    Map data;
+    Map? data;
     try {
       bool isCached = cache.existsSync();
       if (isCached) {
@@ -86,7 +88,7 @@ class MusicDao {
         data = await HttpUtil.getJsonData(url, checkCacheTimeout: false);
       }
 
-      if (data.containsKey('nolyric')) {
+      if (data!.containsKey('nolyric')) {
         // 无歌词
         return Lyric.empty();
       }
@@ -138,9 +140,9 @@ class MusicDao {
     return songList;
   }
 
-  static Future<Map> getSongDetail(String id) async {
+  static Future<Map?> getSongDetail(String id) async {
     List songList = await getSongDetails(id);
-    Map song;
+    Map? song;
     if (songList.length > 0) {
       song = songList[0];
     }

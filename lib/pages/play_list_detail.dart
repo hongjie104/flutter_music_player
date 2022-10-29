@@ -11,7 +11,8 @@ import 'package:flutter_music_player/widget/song_item_tile.dart';
 class PlayListPage extends StatefulWidget {
   final Map playlist;
   final String heroTag;
-  PlayListPage({Key key, @required this.playlist, this.heroTag}) : super(key: key);
+  PlayListPage({Key key, required this.playlist, this.heroTag})
+      : super(key: key);
 
   _PlayListPageState createState() => _PlayListPageState();
 }
@@ -56,25 +57,25 @@ class _PlayListPageState extends State<PlayListPage> {
     return WillPopScope(
         onWillPop: _beforePop,
         child: Scaffold(
-              body: LoadingContainer(
-                isLoading: this._songs.length == 0,
-                cover: true,
-                child: CustomScrollView(
-                  slivers: <Widget>[
-                    _buildAppBar(),
-                    SliverList(
-                      delegate: SliverChildBuilderDelegate(
-                        (BuildContext context, int index) {
-                          return SongItemTile(this._songs, index);
-                        },
-                        childCount: _songs.length,
-                      ),
-                    ),
-                  ],
-                  controller: _controller,
+          body: LoadingContainer(
+            isLoading: this._songs.length == 0,
+            cover: true,
+            child: CustomScrollView(
+              slivers: <Widget>[
+                _buildAppBar(),
+                SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    (BuildContext context, int index) {
+                      return SongItemTile(this._songs, index);
+                    },
+                    childCount: _songs.length,
+                  ),
                 ),
-              ),
-            ));
+              ],
+              controller: _controller,
+            ),
+          ),
+        ));
   }
 
   Widget _buildAppBar() {
@@ -83,9 +84,7 @@ class _PlayListPageState extends State<PlayListPage> {
       pinned: true,
       floating: false,
       snap: false,
-      actions: [
-        FavoritePlayListIcon(widget.playlist)
-      ],
+      actions: [FavoritePlayListIcon(widget.playlist)],
       flexibleSpace: FlexibleSpaceBar(
         title: Text(
           "${widget.playlist['name']}",
@@ -126,7 +125,7 @@ class _PlayListPageState extends State<PlayListPage> {
   }
 
   Future<bool> _beforePop() async {
-    // 在页面退出的时候回到顶部，不然Hero动画之前的图片会空白。
+    // 在页面退出的时候回到顶部,不然Hero动画之前的图片会空白。
     _controller.jumpTo(0);
     return true;
   }

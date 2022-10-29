@@ -1,24 +1,34 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:flutter/material.dart';
 import 'package:flutter_music_player/model/color_provider.dart';
 import 'package:provider/provider.dart';
 
 class GradientText extends StatefulWidget {
   final Text text;
+
   final double offsetX;
+
   final Color colorBg;
-  _GradientTextState _state;
-  GradientText({this.text, this.offsetX = 0.0, this.colorBg = Colors.white});
+
+  _GradientTextState? _state;
+
+  GradientText({
+    required this.text,
+    this.offsetX = 0.0,
+    this.colorBg = Colors.white,
+  });
 
   @override
-  _GradientTextState createState() {
+  State createState() {
     _state = _GradientTextState();
-    return _state;
+    return _state!;
   }
 
   int retryCount = 0;
   void setOffsetX(double offsetX) {
     if (_state == null) {
-      print('_LyricPageState is null, retryCount: $retryCount');
+      // print('_LyricPageState is null, retryCount: $retryCount');
       Future.delayed(Duration(milliseconds: 200)).then((_) {
         retryCount++;
         if (retryCount < 5) {
@@ -27,7 +37,7 @@ class GradientText extends StatefulWidget {
       });
     } else {
       retryCount = 0;
-      _state.setOffsetX(offsetX);
+      _state!.setOffsetX(offsetX);
     }
   }
 }
@@ -51,7 +61,7 @@ class _GradientTextState extends State<GradientText> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.text.data.isEmpty) {
+    if (widget.text.data != null && widget.text.data!.isEmpty) {
       return widget.text;
     }
 
@@ -62,7 +72,7 @@ class _GradientTextState extends State<GradientText> {
 
     /// 参考：https://juejin.im/post/5c860c0a6fb9a049e702ef39
     return ShaderMask(
-      // 遮罩层src，通过不同的BlendMode(混合模式)叠在dst上，产生不同的效果。
+      // 遮罩层src,通过不同的BlendMode(混合模式)叠在dst上,产生不同的效果。
       shaderCallback: (bounds) {
         //print('bounds: ${bounds.width}');
         return gradient.createShader(
